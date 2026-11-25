@@ -3,9 +3,6 @@ name: build-android
 on:
   push:
     branches: [ main, master ]
-    paths:
-      - 'android/**'
-      - '.github/workflows/build-android.yml'
   workflow_dispatch:
 
 permissions:
@@ -14,9 +11,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: android
     steps:
       - uses: actions/checkout@v4
 
@@ -27,7 +21,10 @@ jobs:
           java-version: 17
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v4
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
+          log-accepted-android-sdk-licenses: false
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
